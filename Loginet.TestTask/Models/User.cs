@@ -14,8 +14,18 @@ namespace Loginet.TestTask.Models
         [DataMember(Name = "username")]
         public string UserName { get; set; }
 
+        //[DataMember(Name = "email")]
+        //public string Email { get; set; }
+
+        [IgnoreDataMember()]
+        public string _email { get; set; }
+
         [DataMember(Name = "email")]
-        public string Email { get; set; }
+        public string EncryptedEmail
+        {
+            get { return UserSecurityOptions.EncryptEmail ? Utils.SecurityUtils.GetHashFromString(_email) : _email; }
+            set { _email = value; }
+        }
 
         [DataMember(Name = "address")]
         public Address Address { get; set; }

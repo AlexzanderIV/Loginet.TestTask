@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Loginet.TestTask.Models;
 using Loginet.TestTask.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,8 @@ namespace Loginet.TestTask.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService;
+
+            UserSecurityOptions.EncryptEmail = true;
         }
 
         // GET api/users
