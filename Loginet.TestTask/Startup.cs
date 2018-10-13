@@ -22,6 +22,10 @@ namespace Loginet.TestTask
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession(options => {
+                options.IdleTimeout = System.TimeSpan.FromMinutes(10);
+            });
+
             services
                 .AddMvc()
                 .AddJsonOptions(options =>
@@ -42,6 +46,7 @@ namespace Loginet.TestTask
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSession();
             app.UseMvc();
         }
     }

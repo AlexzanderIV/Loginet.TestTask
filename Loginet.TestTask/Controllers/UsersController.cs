@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Loginet.TestTask.Attributes;
 using Loginet.TestTask.Models;
 using Loginet.TestTask.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,11 @@ namespace Loginet.TestTask.Controllers
 
         // GET api/users
         [HttpGet]
+        [SessionAuthentication]
         public async Task<IActionResult> Get()
         {
-            var result = await _userService.GetAllUsersAsync();
+            var isAuthenticated = Utils.SecurityUtils.IsAuthenticated(HttpContext.Session);
+            var result = await _userService.GetAllUsersAsync(!isAuthenticated);
             if (result.Content != null)
             {
                 return Ok(result.Content);
@@ -34,9 +37,11 @@ namespace Loginet.TestTask.Controllers
 
         // GET api/users/5
         [HttpGet("{id}")]
+        [SessionAuthentication]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _userService.GetUserByIdAsync(id);
+            var isAuthenticated = Utils.SecurityUtils.IsAuthenticated(HttpContext.Session);
+            var result = await _userService.GetUserByIdAsync(id, !isAuthenticated);
             if (result.Content != null)
             {
                 return Ok(result.Content);

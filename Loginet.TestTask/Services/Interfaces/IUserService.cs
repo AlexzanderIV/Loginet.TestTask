@@ -11,14 +11,14 @@ namespace Loginet.TestTask.Services.Interfaces
         /// Get all users.
         /// </summary>
         /// <returns>List of users.</returns>
-        Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync();
+        Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync(bool encryptUser = true);
 
         /// <summary>
         /// Get user by its identifier.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>User with provided identifier.</returns>
-        Task<ApiResponse<User>> GetUserByIdAsync(int userId);
+        Task<ApiResponse<User>> GetUserByIdAsync(int userId, bool encryptUser = true);
 
         /// <summary>
         /// Get albums of the user.

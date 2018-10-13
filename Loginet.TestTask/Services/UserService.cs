@@ -11,15 +11,30 @@ namespace Loginet.TestTask.Services
     public class UserService : IUserService
     {
         /// <inheritdoc />
-        public async Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync()
+        public async Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync(bool encryptUser = true)
         {
-            return await new RestApiDataProvider().GetAllUsersAsync();
+            var usersResponse = await new RestApiDataProvider().GetAllUsersAsync();
+
+            if (encryptUser && usersResponse.Content != null)
+            {
+                foreach (var user in usersResponse.Content)
+                {
+                    user.EncryptEmail();
+                }
+            }
+            return usersResponse;
         }
 
         /// <inheritdoc />
-        public async Task<ApiResponse<User>> GetUserByIdAsync(int userId)
+        public async Task<ApiResponse<User>> GetUserByIdAsync(int userId, bool encryptUser = true)
         {
-            return await new RestApiDataProvider().GetUserByIdAsync(userId);
+            var userResponse = await new RestApiDataProvider().GetUserByIdAsync(userId);
+
+            if (encryptUser && userResponse.Content != null)
+            {
+                userResponse.Content.EncryptEmail();
+            }
+            return userResponse;
         }
 
         /// <inheritdoc />
