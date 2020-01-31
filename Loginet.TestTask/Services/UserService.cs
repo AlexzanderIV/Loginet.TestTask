@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Loginet.TestTask.DataProvider;
 using Loginet.TestTask.Models;
@@ -10,10 +9,17 @@ namespace Loginet.TestTask.Services
 {
     public class UserService : IUserService
     {
+        private readonly RestApiDataProvider _dataProvider;
+
+        public UserService(RestApiDataProvider dataProvider)
+        {
+            _dataProvider = dataProvider ?? throw new ArgumentNullException(nameof(dataProvider));
+        }
+
         /// <inheritdoc />
         public async Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync(bool encryptUser = true)
         {
-            var usersResponse = await new RestApiDataProvider().GetAllUsersAsync();
+            var usersResponse = await _dataProvider.GetAllUsersAsync();
 
             if (encryptUser && usersResponse.Content != null)
             {
@@ -28,7 +34,7 @@ namespace Loginet.TestTask.Services
         /// <inheritdoc />
         public async Task<ApiResponse<User>> GetUserByIdAsync(int userId, bool encryptUser = true)
         {
-            var userResponse = await new RestApiDataProvider().GetUserByIdAsync(userId);
+            var userResponse = await _dataProvider.GetUserByIdAsync(userId);
 
             if (encryptUser && userResponse.Content != null)
             {
@@ -40,7 +46,7 @@ namespace Loginet.TestTask.Services
         /// <inheritdoc />
         public Task<ApiResponse<IEnumerable<Album>>> GetAlbumsByUserIdAsync(int userId)
         {
-            return new RestApiDataProvider().GetAlbumsByUserIdAsync(userId);
+            return _dataProvider.GetAlbumsByUserIdAsync(userId);
         }
     }
 }

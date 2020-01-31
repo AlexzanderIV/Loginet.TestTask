@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Loginet.TestTask.Services;
 using Loginet.TestTask.Services.Interfaces;
+using Loginet.TestTask.DataProvider;
 using Newtonsoft.Json;
 
 namespace Loginet.TestTask
@@ -34,6 +33,9 @@ namespace Loginet.TestTask
                 })
                 .AddXmlSerializerFormatters();
 
+            services.AddHttpClient();
+            services.AddScoped<IRestClient, RestClient>();
+            services.AddScoped<RestApiDataProvider>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAlbumService, AlbumService>();
         }

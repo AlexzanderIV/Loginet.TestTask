@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Loginet.TestTask.Models;
 
@@ -6,6 +7,7 @@ namespace Loginet.TestTask.DataProvider
 {
     public class RestApiDataProvider
     {
+        // TODO: Move to config.
         private const string ApiBaseUrl = "http://jsonplaceholder.typicode.com/";
 
         private const string UsersApiEndpoint = "users";
@@ -15,7 +17,12 @@ namespace Loginet.TestTask.DataProvider
         /// <summary>
         /// Simple REST client to call for APIs endpoints.
         /// </summary>
-        private readonly RestClient _restClient = new RestClient();
+        private readonly IRestClient _restClient;
+
+        public RestApiDataProvider(IRestClient restClient)
+        {
+            _restClient = restClient ?? throw new ArgumentNullException(nameof(restClient));
+        }
 
         #region Users
 
